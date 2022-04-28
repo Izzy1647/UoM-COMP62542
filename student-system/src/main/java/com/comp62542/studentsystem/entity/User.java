@@ -2,7 +2,7 @@ package com.comp62542.studentsystem.entity;
 
 public class User {
     private int id;
-    private String studentId;
+    private String studentID;
     private String name;
     private int status;  // 0: not registered / 1: fully registered
     private String type; // student or admin
@@ -15,12 +15,12 @@ public class User {
         this.id = id;
     }
 
-    public String getStudentId() {
-        return studentId;
+    public String getStudentID() {
+        return studentID;
     }
 
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
     }
 
     public String getName() {
@@ -51,7 +51,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", studentId='" + studentId + '\'' +
+                ", studentID='" + studentID + '\'' +
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", type='" + type + '\'' +
