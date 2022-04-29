@@ -9,17 +9,22 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { login } from './api'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../../api/signin'
 
 const theme = createTheme()
 
 export default function SignIn() {
+  const navigate = useNavigate()
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const body = {studentId: data.get('studentId') as string}
+    const body = { studentId: data.get('studentId') as string }
     const res = await login(body)
-    console.log("rea:", res)
+    if (res.status) {
+      navigate('/dashboard')
+    }
   }
 
   return (
