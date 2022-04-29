@@ -3,6 +3,13 @@ import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { mockServer } from './server/server'
+
+// mock server
+const env = process.env.NODE_ENV
+if (env !== 'production') {
+  mockServer()
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
