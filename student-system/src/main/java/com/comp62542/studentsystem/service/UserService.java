@@ -24,26 +24,30 @@ public class UserService {
         return userMapper.selectById(id);
     }
 
-    public Map<String, Object> login(String StudentId) {
+    public Map<String, Object> login(String studentId) {
         Map<String, Object> map = new HashMap<>();
 
-        if(StringUtils.isBlank(StudentId)) {
-            map.put("studentIdMsg", "StudnetId can not be empty!");
+        if(StringUtils.isBlank(studentId)) {
+            map.put("studentIdMsg", "studnetId can not be empty!");
             return map;
         }
-        User user = userMapper.selectByStudentId(StudentId);
+        User user = userMapper.selectByStudentId(studentId);
+
+        // status：0 登入成功，status：1 登入成功
         if(user == null) {
-            map.put("userMsg", "StudentId Incorrect!");
+            map.put("status", 0);
+            map.put("user", user);
             return map;
         }
 
         // JWT token
         Map<String, String> payload = new HashMap<>();
-        payload.put("StudentId", user.getStudentID());
+        payload.put("studentId", user.getStudentID());
         payload.put("name", user.getName());
         String token = JWTUtils.getToken(payload);
         map.put("token", token);
-
+        map.put("user", user);
+        map.put("status", 1);
         return map;
     }
 }
