@@ -9,16 +9,17 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { login } from './api'
 
 const theme = createTheme()
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    console.log({
-      password: data.get('password')
-    })
+    const body = {studentId: data.get('studentId') as string}
+    const res = await login(body)
+    console.log("rea:", res)
   }
 
   return (
