@@ -68,11 +68,13 @@ POST
 
 返回：
 
+token放在header里
+
 ```
 return:
 {
+	"status": "success" | "fail"
 	"user":user,
-	"token":token
 }
 ```
 
