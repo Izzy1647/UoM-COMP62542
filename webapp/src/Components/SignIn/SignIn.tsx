@@ -24,10 +24,14 @@ export default function SignIn() {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     const body = { studentId: data.get('studentId') as string }
-    const res = await login(body)
-    if (res.status) {
-      navigate('/dashboard')
-    } else {
+    try {
+      const res = await login(body)
+      if (res.status) {
+        navigate('/dashboard')
+      } else {
+        setShowAlert(true)
+      }
+    } catch {
       setShowAlert(true)
     }
   }
@@ -57,7 +61,7 @@ export default function SignIn() {
             severity="warning"
             sx={{ width: '100%' }}
           >
-            Invalid student ID, try again.
+            Error, try later. Check your student ID and your internet.
           </Alert>
         </Snackbar>
         <CssBaseline />
