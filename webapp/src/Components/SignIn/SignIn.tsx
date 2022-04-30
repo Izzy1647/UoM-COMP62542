@@ -1,7 +1,9 @@
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
+import Alert from '@mui/material/Alert'
 import CssBaseline from '@mui/material/CssBaseline'
+import Snackbar from '@mui/material/Snackbar'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
@@ -16,6 +18,7 @@ const theme = createTheme()
 
 export default function SignIn() {
   const navigate = useNavigate()
+  const [showAlert, setShowAlert] = React.useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -24,12 +27,39 @@ export default function SignIn() {
     const res = await login(body)
     if (res.status) {
       navigate('/dashboard')
+    } else {
+      setShowAlert(true)
     }
+  }
+
+  const handleCloseAlert = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setShowAlert(false)
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert
+            // onClose={handleCloseAlert}
+            severity="warning"
+            sx={{ width: '100%' }}
+          >
+            Invalid student ID, try again.
+          </Alert>
+        </Snackbar>
         <CssBaseline />
         <Box
           sx={{

@@ -19,10 +19,13 @@ export function mockServer() {
 
       this.post('/login', (schema, request) => {
         // let attrs = JSON.parse(request.requestBody)
-        return { status: 1, user: {
-          id: 1,
-          studentID: 1828282828,
-        } }
+        return {
+          status: 0,
+          user: {
+            id: 1,
+            studentID: 1828282828
+          }
+        }
       })
     }
   })
