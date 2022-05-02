@@ -15,16 +15,36 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { login } from '../../api/signin'
 
-const theme = createTheme()
 const cookies = new Cookies()
+const theme = createTheme()
 
 export default function SignIn() {
   const navigate = useNavigate()
   const [showAlert, setShowAlert] = React.useState(false)
+  const [rememberMe, setRememberMe] = React.useState(false)
+
+  React.useEffect(() => {
+    if(localStorage.getItem('studentId')) {
+      setRememberMe(true)
+    }
+  }, [])
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
+
+    // store studentId if rememberMe checked
+    // remove stored studentId if different studentId applied and not checked
+    const studentId = data.get('studentId') as string
+    if (rememberMe) {
+      localStorage.setItem('studentId', studentId)
+    } else {
+      let storedStudentId = localStorage.getItem('studentId')
+      if (studentId !== storedStudentId) {
+        localStorage.removeItem('studentId')
+      }
+    }
+
     try {
       const res = await login(data)
       const { token } = res
@@ -49,6 +69,11 @@ export default function SignIn() {
     }
 
     setShowAlert(false)
+  }
+
+  const handleRemberMeCheck = (event: any) => {
+    const checked = event.target.checked
+    setRememberMe(checked)
   }
 
   return (
@@ -93,15 +118,16 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
+              defaultValue={localStorage.getItem('studentId')}
               name="studentId"
               label="Your student ID"
               type="studentId"
               id="studentId"
-              autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary" checked={rememberMe} />}
               label="Remember me"
+              onChange={handleRemberMeCheck}
             />
             <Button
               type="submit"
