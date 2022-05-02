@@ -23,6 +23,12 @@ export default function SignIn() {
   const [showAlert, setShowAlert] = React.useState(false)
   const [rememberMe, setRememberMe] = React.useState(false)
 
+  React.useEffect(() => {
+    if(localStorage.getItem('studentId')) {
+      setRememberMe(true)
+    }
+  }, [])
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -119,7 +125,7 @@ export default function SignIn() {
               id="studentId"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary" checked={rememberMe} />}
               label="Remember me"
               onChange={handleRemberMeCheck}
             />
