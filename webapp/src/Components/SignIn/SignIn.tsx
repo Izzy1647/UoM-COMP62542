@@ -12,9 +12,11 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 import { login } from '../../api/signin'
 
 const theme = createTheme()
+const cookies = new Cookies()
 
 export default function SignIn() {
   const navigate = useNavigate()
@@ -23,9 +25,11 @@ export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const body = { studentId: data.get('studentId') as string }
     try {
-      const res = await login(body)
+      const res = await login(data)
+      const { token } = res
+      cookies.set('token', token)
+      sessionStorage.setItem('user', JSON.stringify(res.user))
       if (res.status) {
         navigate('/dashboard')
       } else {

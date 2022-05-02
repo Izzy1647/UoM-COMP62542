@@ -1,6 +1,5 @@
 import fetch from "../utils/fetch"
-// import { API_PREFIX } from '../constants'
-
+import { API_PREFIX } from "./constants"
 export interface ISignInParam {
   studentId: string
 }
@@ -8,10 +7,9 @@ export interface ISignInParam {
 /**
  * student signin
  */
-export function login(param: ISignInParam) {
-  const { studentId } = param
-  return fetch(`/login`, {
+export function login(param: FormData) {
+  return fetch(`${API_PREFIX}/login`, {
     method: 'POST',
-    body: JSON.stringify({ studentId })
+    body: param
   })
 }
