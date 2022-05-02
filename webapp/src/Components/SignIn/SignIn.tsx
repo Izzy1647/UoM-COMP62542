@@ -1,7 +1,9 @@
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
+import Alert from '@mui/material/Alert'
 import CssBaseline from '@mui/material/CssBaseline'
+import Snackbar from '@mui/material/Snackbar'
 import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
@@ -10,26 +12,62 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 import { login } from '../../api/signin'
 
 const theme = createTheme()
+const cookies = new Cookies()
 
 export default function SignIn() {
   const navigate = useNavigate()
+  const [showAlert, setShowAlert] = React.useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    const body = { studentId: data.get('studentId') as string }
-    const res = await login(body)
-    if (res.status) {
-      navigate('/dashboard')
+    try {
+      const res = await login(data)
+      const { token } = res
+      cookies.set('token', token)
+      sessionStorage.setItem('user', JSON.stringify(res.user))
+      if (res.status) {
+        navigate('/dashboard')
+      } else {
+        setShowAlert(true)
+      }
+    } catch {
+      setShowAlert(true)
     }
+  }
+
+  const handleCloseAlert = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === 'clickaway') {
+      return
+    }
+
+    setShowAlert(false)
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+        <Snackbar
+          open={showAlert}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        >
+          <Alert
+            // onClose={handleCloseAlert}
+            severity="warning"
+            sx={{ width: '100%' }}
+          >
+            Error, try later. Check your student ID and your internet.
+          </Alert>
+        </Snackbar>
         <CssBaseline />
         <Box
           sx={{
