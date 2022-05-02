@@ -1,5 +1,7 @@
 # COMP62542
 
+Backend: https://github.com/gemarkq/comp62542-backend/tree/master
+
 Database-schema
 
 ## User表
