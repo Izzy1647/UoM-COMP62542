@@ -17,7 +17,7 @@ Database-schema
 4. status （判断是否fully registered）
 5. type (判断身份 student or admin）
 
-## Enrollment表
+## Activity Enrollment表
 
 字段：
 
@@ -36,6 +36,59 @@ Database-schema
 5. type (string-course, tutorial, meeting)
 6. time
 
+## courses表
+
+字段：
+
+1. id
+2. course id
+3. course name
+4. type ('opt' | 'course')
+5. time
+6. department
+7. teacher
+
+## course enrollment 表
+
+字段：
+
+1. id
+2. Course id
+3. Student id 
+
+
+
+For a fully registered student, she/he will allow the student support office too add or remove some courses from her/his course list.
+
+master账号登陆 10000
+
+```
+master token:
+/enrollment
+GET
+{
+	courseId: '',
+	studentId: ''
+}
+
+POST / DELETE
+{
+	courseId: '',
+	studentId: ''
+}
+
+if not: 
+{
+	
+}
+```
+
+
+
+
+
+
+
 ## subscription表 (订阅表)
 
 字段：
@@ -51,6 +104,9 @@ Database-schema
 1. id
 2. newsletter id
 3. content
+
+
+
 
 
 ## 接口文档
@@ -179,6 +235,4 @@ POST
 	newsletterId: ''
 }
 ```
-
-
 
