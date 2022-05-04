@@ -53,9 +53,6 @@ Database-schema
 3. content
 
 
-
-
-
 ## 接口文档
 
 ### 登录：
@@ -79,4 +76,109 @@ return:
 	"user":user,
 }
 ```
+
+
+
+### 时间表 5.5 联调
+
+For a fully registered student, she/he can view her/his basic **timetable** and add additional activities such as tutorials and supervision meetings to the basic timetable. Assume the timetable is the same for every week, so that you only need to consider one week’s timetable.
+
+```
+/activities
+GET
+获取课程表
+token 在header Authorization字段里
+
+return: 
+{
+	activityName: '',
+	type: 'course|optcourse|tutorial|meeting',
+	time: '1-0900-1100'
+}
+
+
+add additional activities such as tutorials and supervision meetings to the basic timetable.
+POST
+新建活动
+{
+	type: 'tutorial' | 'meeting',
+	time: '1-0900-1100'
+	activityName: ''
+}
+
+return :
+{
+	status: 0|1,
+	message: ''
+}
+
+```
+
+
+
+For a fully registered student, she/he can choose an optional course unit from a set of course units and the student can also opt-out a course unit from the optional course units. The optional courses are offered by Computer Science and Mathematics Departments.
+
+```
+/optcourses
+GET
+所有可选的课的列表
+return 
+{
+	data: [
+		{
+				activityName: '',
+				type: 'optcourse',
+				time: ['1-0900-1100', ],
+				department: '',
+				courseid: ''
+		},
+		{
+		
+		}
+	]
+}
+
+POST
+token都在header里
+{
+	courseId: ''
+}
+
+return
+{
+	status: 0|1,
+	message: ''
+}
+
+```
+
+
+
+## Newsletter 5.6
+
+/subscribe
+
+```
+GET
+
+return 
+{
+	data: [
+		{
+			newsletterId: '',
+			newsletterName: ''
+		},
+		{
+		
+		},
+	]
+}
+
+POST
+{
+	newsletterId: ''
+}
+```
+
+
 
