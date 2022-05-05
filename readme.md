@@ -114,7 +114,7 @@ if not:
 ### 登录：
 
 ```
-/login
+/user/login
 POST
 {
 	studentID: string
