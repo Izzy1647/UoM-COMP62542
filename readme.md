@@ -2,6 +2,8 @@
 
 Backend: https://github.com/gemarkq/comp62542-backend/tree/master
 
+Try it: https://studentsys.netlify.app/
+
 Database-schema
 
 ## User表
