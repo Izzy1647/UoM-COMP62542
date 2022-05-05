@@ -5,6 +5,7 @@ import {
   Appointments
 } from '@devexpress/dx-react-scheduler-material-ui'
 // import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
 import { styled, alpha } from '@mui/material/styles'
 import { ViewState } from '@devexpress/dx-react-scheduler'
 import appointments from './mock-today-appointments'
@@ -84,15 +85,8 @@ const DayScaleCell = (props: any) => {
 const Calendar = () => {
   return (
     <>
-      {/* <Grid item xs={6}>
-        
-
-      </Grid>
-      <Grid item xs={6}>
-        ads32re
-      </Grid> */}
       {/* @ts-ignore */}
-      <Scheduler data={appointments} height={660}>
+      <Scheduler data={appointments} height={580}>
         <ViewState />
         <WeekView
           startDayHour={9}
@@ -102,6 +96,10 @@ const Calendar = () => {
         />
         <Appointments />
       </Scheduler>
+
+      <Button style={{ margin: '20px auto' }} variant="contained">
+        NEW ACTIVITY
+      </Button>
     </>
   )
 }
