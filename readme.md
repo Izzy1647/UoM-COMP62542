@@ -147,9 +147,13 @@ token 在header Authorization字段里
 
 return: 
 {
-	activityName: '',
-	type: 'course|optcourse|tutorial|meeting',
-	time: '1-0900-1100'
+	data: [
+		{
+			activityName: '',
+			type: 'course|optcourse|tutorial|meeting',
+			time: ['1-0900-1100']
+		},
+	]
 }
 
 
