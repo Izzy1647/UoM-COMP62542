@@ -8,7 +8,7 @@ export interface ISignInParam {
  * student signin
  */
 export function login(param: FormData) {
-  return fetch(`${API_PREFIX}/login`, {
+  return fetch(`${API_PREFIX}/user/login`, {
     method: 'POST',
     body: param
   })
