@@ -2,6 +2,8 @@
 
 Backend: https://github.com/gemarkq/comp62542-backend/tree/master
 
+Try it: https://studentsys.netlify.app/
+
 Database-schema
 
 ## User表
@@ -114,7 +116,7 @@ if not:
 ### 登录：
 
 ```
-/login
+/user/login
 POST
 {
 	studentID: string
@@ -147,9 +149,13 @@ token 在header Authorization字段里
 
 return: 
 {
-	activityName: '',
-	type: 'course|optcourse|tutorial|meeting',
-	time: '1-0900-1100'
+	data: [
+		{
+			activityName: '',
+			type: 'course|optcourse|tutorial|meeting',
+			time: ['1-0900-1100']
+		},
+	]
 }
 
 
