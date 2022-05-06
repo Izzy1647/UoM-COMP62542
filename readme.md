@@ -228,7 +228,8 @@ return
 	data: [
 		{
 			newsletterId: '',
-			newsletterName: ''
+			newsletterName: '',
+			preview: ''
 		},
 		{
 		
