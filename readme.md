@@ -153,7 +153,12 @@ return:
 		{
 			activityName: '',
 			type: 'course|optcourse|tutorial|meeting',
-			time: ['1-0900-1100']
+			time: '1-0900-1100'
+		},
+		{
+			activityName: '',
+			type: 'course|optcourse|tutorial|meeting',
+			time: '2-0900-1100'
 		},
 	]
 }
