@@ -51,7 +51,7 @@ export default function SignIn() {
       cookies.set('token', token)
       sessionStorage.setItem('user', JSON.stringify(res.user))
       if (res.status) {
-        navigate('/dashboard')
+        navigate('/dashboard/status')
       } else {
         setShowAlert(true)
       }
