@@ -193,9 +193,9 @@ return
 {
 	data: [
 		{
-				activityName: '',
-				type: 'optcourse',
-				time: ['1-0900-1100', ],
+				courseName: '',
+				type: 'opt',
+				time: '1-0900-1100',
 				department: '',
 				courseid: ''
 		},
