@@ -1143,7 +1143,7 @@
   dependencies:
     "@date-io/core" "^2.13.2"
 
-"@date-io/dayjs@^2.11.0":
+"@date-io/dayjs@^2.11.0", "@date-io/dayjs@^2.13.2":
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/@date-io/dayjs/-/dayjs-2.13.2.tgz#b337e92bd9d3fe896619f82d68f23209e2b03f8f"
   integrity sha512-uP/Bvr+QfzpLN3JGX/x3uJtGnnSWckn7e500Wn+pVNVvIleaXSJxDbE5IAz1P7WwQrnSuxuBI1e6Sl8J/njzKQ==

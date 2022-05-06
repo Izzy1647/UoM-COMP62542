@@ -4,6 +4,11 @@ export interface ISignInParam {
   studentId: string
 }
 
+export enum EActivityType {
+  Meeting = 'meeting',
+  Tutorial = 'tutorial'
+}
+
 /**
  * get all activities to display in calendar
  */
@@ -16,9 +21,15 @@ export function getActivities() {
 /**
  * add a new activity
  */
-export function addActivity(param: FormData) {
-  return fetch(`${API_PREFIX}/activities`, {
-    method: 'POST',
-    body: param
-  })
+export function postActivity(
+  activityName: string,
+  type: EActivityType,
+  time: string
+) {
+  return fetch(
+    `${API_PREFIX}/activities?type=${type}&activityName=${activityName}&time=${time}`,
+    {
+      method: 'POST'
+    }
+  )
 }

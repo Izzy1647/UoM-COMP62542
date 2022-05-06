@@ -6,13 +6,20 @@ import {
 } from '@devexpress/dx-react-scheduler-material-ui'
 import moment from 'moment'
 // import Grid from '@mui/material/Grid'
+import LinearProgress from '@mui/material/LinearProgress'
 import Button from '@mui/material/Button'
-import Drawer from '@mui/material/Drawer'
 import Box from '@mui/material/Box'
+import FormControl from '@mui/material/FormControl'
+import Select, { SelectChangeEvent } from '@mui/material/Select'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import TextField from '@mui/material/TextField'
+import Modal from '@mui/material/Modal'
 import { styled, alpha } from '@mui/material/styles'
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { ViewState } from '@devexpress/dx-react-scheduler'
 // import appointments from './mock-today-appointments'
-import { getActivities } from '../../api/calendar'
+import { EActivityType, getActivities, postActivity } from '../../api/calendar'
 
 const PREFIX = 'Demo'
 
@@ -22,6 +29,16 @@ const classes = {
   today: `${PREFIX}-today`,
   weekend: `${PREFIX}-weekend`
 }
+
+const weekdays = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+]
 
 const StyledWeekViewTimeTableCell = styled(WeekView.TimeTableCell)(
   ({ theme }) => ({
@@ -102,10 +119,8 @@ interface ICalendarValue {
 
 const processActivityData = (data: IActivityValue): ICalendarValue => {
   const { time, activityName } = data
-  console.log(time)
 
-  // !!time[0] to be modified after api update
-  const [weekday, startTime, endTime] = time[0].split('-')
+  const [weekday, startTime, endTime] = time.split('-')
 
   const resStartTime = moment()
     .startOf('week')
@@ -119,8 +134,6 @@ const processActivityData = (data: IActivityValue): ICalendarValue => {
     .set('hour', Number(endTime.slice(0, 2)))
     .set('minute', Number(endTime.slice(2)))
 
-  console.log(resStartTime, resEndTime)
-
   return {
     startDate: resStartTime.toDate(),
     endDate: resEndTime.toDate(),
@@ -130,27 +143,34 @@ const processActivityData = (data: IActivityValue): ICalendarValue => {
 }
 
 const Calendar = () => {
-  const [drawerOpen, setDrawerOpen] = React.useState(false)
+  const [modalOpen, setModalOpen] = React.useState(false)
   const [appointments, setAppointments] = React.useState([{}])
+  const [newActivityType, setNewActivityType] = React.useState('')
+  const [weekday, setWeekday] = React.useState('')
+  const [startTime, setStartTime] = React.useState('')
+  const [duration, setDuration] = React.useState('')
+  const [showLinearProgress, setshowLinearProgress] = React.useState(false)
+  const [mountInProgress, setMountInProgress] = React.useState(true)
 
-  // send request
+  async function fetchActivities() {
+    const res = await getActivities()
+    setMountInProgress(false)
+    // data: IActivityValue[]
+    const activites = res.data as IActivityValue[]
+    const appointments = activites.map(item => processActivityData(item))
+    setAppointments(appointments)
+  }
+
+  // fetch activities data
   React.useEffect(() => {
-    async function fetchActivities() {
-      const res = await getActivities()
-
-      // data: IActivityValue[]
-      const activites = res.data as IActivityValue[]
-      const appointments = activites.map(item => processActivityData(item))
-      setAppointments(appointments)
-    }
     fetchActivities()
   }, [])
 
   const onClickNewActivity = () => {
-    setDrawerOpen(true)
+    setModalOpen(true)
   }
 
-  const toggleDrawer =
+  const toggleModal =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
         event.type === 'keydown' &&
@@ -159,11 +179,72 @@ const Calendar = () => {
       ) {
         return
       }
-      setDrawerOpen(open)
+      setModalOpen(open)
     }
+
+  const handleNewActivityTypeSelect = (event: SelectChangeEvent) => {
+    setNewActivityType(event.target.value as string)
+  }
+
+  const handleWeekdaySelect = (event: SelectChangeEvent) => {
+    setWeekday(event.target.value as string)
+  }
+
+  const handleStartTimeSelect = (event: SelectChangeEvent) => {
+    setStartTime(event.target.value as string)
+  }
+  const handleDurationSelect = (event: SelectChangeEvent) => {
+    setDuration(event.target.value as string)
+  }
+
+  const concatTime = (day: string, hour: string, duration: string) => {
+    // 5 14 90
+    return `${day}-${hour}00-${Number(hour) + Number(duration)}00`
+  }
+
+  const handleSubmitNewActivity = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const day = data.get('weekday') as string
+    const hour = data.get('startTime') as string
+    const duration = data.get('duration') as string
+
+    const time = concatTime(day, hour, duration)
+    const type = data.get('type') as EActivityType
+    const activityName = data.get('activityName') as string
+
+    setshowLinearProgress(true)
+    const postRes = await postActivity(activityName, type, time)
+    if (postRes.status !== 1) {
+      alert('Something goes wrong, check and try again.')
+    }
+    setshowLinearProgress(false)
+
+    setModalOpen(false)
+    window.location.reload()
+  }
+
+  const boxInModalStyle = {
+    position: 'absolute' as 'absolute',
+    top: '40%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    borderRadius: '4px',
+    boxShadow: 24,
+    p: 4
+  }
 
   return (
     <>
+      {mountInProgress && (
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress />
+        </Box>
+      )}
       {/* @ts-ignore */}
       <Scheduler data={appointments} height={580}>
         <ViewState />
@@ -176,17 +257,130 @@ const Calendar = () => {
         <Appointments />
       </Scheduler>
 
-      <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
+      <Modal
+        open={modalOpen}
+        onClose={toggleModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box
-          sx={{ width: 480 }}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
+          sx={boxInModalStyle}
+          component="form"
+          onSubmit={handleSubmitNewActivity}
         >
-          13456
-        </Box>
-      </Drawer>
+          {showLinearProgress && (
+            <Box sx={{ width: '100%' }}>
+              <LinearProgress />
+            </Box>
+          )}
 
+          <TextField
+            margin="normal"
+            fullWidth
+            // required
+            name="activityName"
+            label="Activity name"
+            id="activityName"
+          />
+          <FormControl margin="normal" fullWidth>
+            <InputLabel>Activity type</InputLabel>
+            <Select
+              // labelId="demo-simple-select-label"
+              id="activityType"
+              value={newActivityType}
+              label="Activity type"
+              onChange={handleNewActivityTypeSelect}
+              name="activityType"
+            >
+              <MenuItem value={EActivityType.Tutorial}>Tutorial</MenuItem>
+              <MenuItem value={EActivityType.Meeting}>Meeting</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel>Pick a day</InputLabel>
+            <Select
+              // labelId="demo-simple-select-label"
+              id="weekday"
+              value={weekday}
+              label="Pick a day"
+              onChange={handleWeekdaySelect}
+              name="weekday"
+            >
+              {weekdays.map((day, index) => {
+                return (
+                  <MenuItem key={day} value={index + 1}>
+                    {day}
+                  </MenuItem>
+                )
+              })}
+            </Select>
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel>Start time</InputLabel>
+            <Select
+              // labelId="demo-simple-select-label"
+              id="startTime"
+              value={startTime}
+              label="Start time"
+              onChange={handleStartTimeSelect}
+              name="startTime"
+            >
+              {Array.from({ length: 9 }, (_, i) => i + 10).map(item => {
+                return (
+                  <MenuItem key={item} value={item}>{`${item}:00`}</MenuItem>
+                )
+              })}
+            </Select>
+          </FormControl>
+
+          <FormControl margin="normal" fullWidth>
+            <InputLabel>Duration</InputLabel>
+            <Select
+              // labelId="demo-simple-select-label"
+              id="duration"
+              value={duration}
+              label="Duration"
+              onChange={handleDurationSelect}
+              name="duration"
+            >
+              <MenuItem value={'1'}>1 hour</MenuItem>
+              <MenuItem value={'2'}>2 hours</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* <TextField
+            // required
+            id="startTime"
+            margin="normal"
+            label="Start time"
+            type="datetime-local"
+            defaultValue="2022-05-09T10:00"
+            name="startTime"
+            sx={{ width: '100%' }}
+            InputLabelProps={{
+              shrink: true
+            }}
+          />
+          <TextField
+            required
+            id="endTime"
+            margin="normal"
+            label="End time"
+            type="datetime-local"
+            defaultValue="2022-05-09T12:00"
+            name="endTime"
+            sx={{ width: '100%' }}
+            InputLabelProps={{
+              shrink: true
+            }}
+          /> */}
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 2 }}>
+            SUBMIT
+          </Button>
+        </Box>
+      </Modal>
       <Button
         onClick={onClickNewActivity}
         style={{ margin: '20px auto' }}
