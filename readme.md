@@ -197,7 +197,7 @@ return
 				type: 'opt',
 				time: '1-0900-1100',
 				department: '',
-				courseid: ''
+				courseId: ''
 		},
 		{
 		
