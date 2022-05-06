@@ -24,6 +24,8 @@ import { mainListItems } from './listItems'
 // import Orders from './Orders'
 import Status from '../Status/Status'
 import Calendar from '../Calendar/Calendar'
+import Newsletter from '../Newsletter/Newsletter'
+
 
 const drawerWidth: number = 240
 
@@ -116,7 +118,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              UoM
             </Typography>
             <IconButton color="inherit">
               {/* badgeContent={1} */}
@@ -167,6 +169,8 @@ function DashboardContent() {
                 <Route path="/teams" element={<Demo />} />
                 <Route path="/status" element={<Status />} />
                 <Route path="/calendar" element={<Calendar />} />
+                <Route path="/newsletter" element={<Newsletter />} />
+
               </Routes>
 
               {/* Chart */}
