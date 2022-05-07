@@ -247,7 +247,7 @@ return
 		{
 			newsletterId: '',
 			newsletterName: '',
-			content: ''
+			preview: ''
 		},
 		{
 		
