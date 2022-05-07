@@ -246,7 +246,8 @@ return
 	data: [
 		{
 			newsletterId: '',
-			newsletterName: ''
+			newsletterName: '',
+			content: ''
 		},
 		{
 		
