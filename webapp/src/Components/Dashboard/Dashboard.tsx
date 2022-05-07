@@ -25,6 +25,7 @@ import { mainListItems } from './listItems'
 import Status from '../Status/Status'
 import Calendar from '../Calendar/Calendar'
 import Newsletter from '../Newsletter/Newsletter'
+import Courses from '../Courses/Courses'
 
 
 const drawerWidth: number = 240
@@ -170,6 +171,8 @@ function DashboardContent() {
                 <Route path="/status" element={<Status />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/newsletter" element={<Newsletter />} />
+                <Route path="/courses" element={<Courses />} />
+
 
               </Routes>
 

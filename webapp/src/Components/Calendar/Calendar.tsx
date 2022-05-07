@@ -30,7 +30,7 @@ const classes = {
   weekend: `${PREFIX}-weekend`
 }
 
-const weekdays = [
+export const weekdays = [
   'Monday',
   'Tuesday',
   'Wednesday',
