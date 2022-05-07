@@ -153,7 +153,12 @@ return:
 		{
 			activityName: '',
 			type: 'course|optcourse|tutorial|meeting',
-			time: ['1-0900-1100']
+			time: '1-0900-1100'
+		},
+		{
+			activityName: '',
+			type: 'course|optcourse|tutorial|meeting',
+			time: '2-0900-1100'
 		},
 	]
 }
@@ -188,11 +193,11 @@ return
 {
 	data: [
 		{
-				activityName: '',
-				type: 'optcourse',
-				time: ['1-0900-1100', ],
+				courseName: '',
+				type: 'opt',
+				time: '1-0900-1100',
 				department: '',
-				courseid: ''
+				courseId: ''
 		},
 		{
 		
@@ -201,6 +206,19 @@ return
 }
 
 POST
+token都在header里
+{
+	courseId: ''
+}
+
+return
+{
+	status: 0|1,
+	message: ''
+}
+
+
+DELETE
 token都在header里
 {
 	courseId: ''
