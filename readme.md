@@ -217,6 +217,19 @@ return
 	message: ''
 }
 
+
+DELETE
+token都在header里
+{
+	courseId: ''
+}
+
+return
+{
+	status: 0|1,
+	message: ''
+}
+
 ```
 
 
