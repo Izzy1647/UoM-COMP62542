@@ -1,9 +1,23 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import NewsletterCard from './NewsletterCard'
-import { newsletters } from './mock'
+import NewsletterCard, { INewsletterCardProps } from './NewsletterCard'
+import { getNewsletters } from '../../api/newsletter'
 
 export default function Newsletter() {
+  const [newsletters, setNewsletters] = React.useState<INewsletterCardProps[]>(
+    []
+  )
+
+  React.useEffect(() => {
+    fetchNewsletters()
+  }, [])
+
+  const fetchNewsletters = async () => {
+    const res = await getNewsletters()
+    const newsletters = res.data as INewsletterCardProps[]
+    setNewsletters(newsletters)
+  }
+
   return (
     <Box
       sx={{
@@ -16,13 +30,7 @@ export default function Newsletter() {
       }}
     >
       {newsletters.map(item => {
-        return (
-          <NewsletterCard
-            id={item.id}
-            title={item.title}
-            preview={item.preview}
-          />
-        )
+        return <NewsletterCard {...item} />
       })}
     </Box>
   )
