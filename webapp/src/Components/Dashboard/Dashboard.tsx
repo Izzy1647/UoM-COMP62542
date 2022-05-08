@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import Cookies from 'universal-cookie'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import MuiDrawer from '@mui/material/Drawer'
@@ -17,7 +18,7 @@ import Grid from '@mui/material/Grid'
 // import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import NotificationsIcon from '@mui/icons-material/Notifications'
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew'
 import { mainListItems } from './listItems'
 // import Chart from './Chart'
 // import Deposits from './Deposits'
@@ -27,7 +28,7 @@ import Calendar from '../Calendar/Calendar'
 import Newsletter from '../Newsletter/Newsletter'
 import Courses from '../Courses/Courses'
 
-
+const cookies = new Cookies()
 const drawerWidth: number = 240
 
 interface AppBarProps extends MuiAppBarProps {
@@ -80,14 +81,17 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme()
 
-const Demo = () => {
-  return <div>test</div>
-}
-
 function DashboardContent() {
+  const navigate = useNavigate()
   const [open, setOpen] = React.useState(true)
   const toggleDrawer = () => {
     setOpen(!open)
+  }
+
+  const handleLogout = () => {
+    sessionStorage.clear()
+    cookies.remove('token')
+    navigate('/')
   }
 
   return (
@@ -121,10 +125,9 @@ function DashboardContent() {
             >
               UoM
             </Typography>
-            <IconButton color="inherit">
-              {/* badgeContent={1} */}
+            <IconButton color="inherit" onClick={handleLogout}>
               <Badge color="secondary">
-                <NotificationsIcon />
+                <PowerSettingsNewIcon />
               </Badge>
             </IconButton>
           </Toolbar>
@@ -148,7 +151,6 @@ function DashboardContent() {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            {/* {secondaryListItems} */}
           </List>
         </Drawer>
         <Box
@@ -167,13 +169,10 @@ function DashboardContent() {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Routes>
-                <Route path="/teams" element={<Demo />} />
                 <Route path="/status" element={<Status />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/newsletter" element={<Newsletter />} />
                 <Route path="/courses" element={<Courses />} />
-
-
               </Routes>
 
               {/* Chart */}
@@ -205,7 +204,6 @@ function DashboardContent() {
               </Grid> */}
 
               {/* Recent Orders */}
-
             </Grid>
           </Container>
         </Box>
