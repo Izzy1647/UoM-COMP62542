@@ -5,6 +5,7 @@ import Alert from '@mui/material/Alert'
 import CssBaseline from '@mui/material/CssBaseline'
 import Snackbar from '@mui/material/Snackbar'
 import TextField from '@mui/material/TextField'
+import LinearProgress from '@mui/material/LinearProgress'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Box from '@mui/material/Box'
@@ -22,9 +23,10 @@ export default function SignIn() {
   const navigate = useNavigate()
   const [showAlert, setShowAlert] = React.useState(false)
   const [rememberMe, setRememberMe] = React.useState(false)
+  const [showLoading, setShowLoading] = React.useState(false)
 
   React.useEffect(() => {
-    if(localStorage.getItem('studentId')) {
+    if (localStorage.getItem('studentId')) {
       setRememberMe(true)
     }
   }, [])
@@ -46,17 +48,21 @@ export default function SignIn() {
     }
 
     try {
+      setShowLoading(true)
       const res = await login(data)
       const { token } = res
       cookies.set('token', token)
       sessionStorage.setItem('user', JSON.stringify(res.user))
+      setShowLoading(false)
       if (res.status) {
-        navigate('/dashboard/status', {state: {status: res.user.status}})
+        navigate('/dashboard/status', { state: { status: res.user.status } })
       } else {
         setShowAlert(true)
+        setShowLoading(false)
       }
     } catch {
       setShowAlert(true)
+      setShowLoading(false)
     }
   }
 
@@ -78,6 +84,11 @@ export default function SignIn() {
 
   return (
     <ThemeProvider theme={theme}>
+      {showLoading && (
+        <Box sx={{ width: '100%' }}>
+          <LinearProgress />
+        </Box>
+      )}
       <Container component="main" maxWidth="xs">
         <Snackbar
           open={showAlert}
@@ -125,7 +136,13 @@ export default function SignIn() {
               id="studentId"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" checked={rememberMe} />}
+              control={
+                <Checkbox
+                  value="remember"
+                  color="primary"
+                  checked={rememberMe}
+                />
+              }
               label="Remember me"
               onChange={handleRemberMeCheck}
             />
