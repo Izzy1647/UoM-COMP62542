@@ -18,6 +18,7 @@ import { login } from '../../api/signin'
 
 const cookies = new Cookies()
 const theme = createTheme()
+export const adminIds = ['17121469', '17120153']
 
 export default function SignIn() {
   const navigate = useNavigate()
@@ -55,7 +56,12 @@ export default function SignIn() {
       sessionStorage.setItem('user', JSON.stringify(res.user))
       setShowLoading(false)
       if (res.status) {
-        navigate('/dashboard/status', { state: { status: res.user.status } })
+        // admin
+        if (adminIds.indexOf(studentId) >= 0) {
+          navigate('/admin')
+        } else {
+          navigate('/dashboard/status', { state: { status: res.user.status } })
+        }
       } else {
         setShowAlert(true)
         setShowLoading(false)
