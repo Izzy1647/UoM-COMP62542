@@ -18,3 +18,12 @@ export function enroll(courseId: string) {
     method: 'POST'
   })
 }
+
+/**
+ * optout a course
+ */
+ export function optout(courseId: string) {
+  return fetch(`${API_PREFIX}/optcourses?courseId=${courseId}`, {
+    method: 'DELETE'
+  })
+}

@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import { weekdays } from '../Calendar/Calendar'
-import { enroll } from '../../api/courses'
+import { enroll, optout } from '../../api/courses'
 
 export interface ICourseCardProps {
   courseName: string
@@ -37,13 +37,19 @@ export default function CourseCard(props: ICourseCardProps) {
       showLoading(true)
       const res = await enroll(courseId)
       showLoading(false)
-      if (res.status === 1) {
-        alert('Success')
-      } else {
-        alert('Fail, try again')
-      }
+      alert(res.message)
     }
   }
+
+  const handleOptout = async () => {
+    if (showLoading) {
+      showLoading(true)
+      const res = await optout(courseId)
+      showLoading(false)
+      alert(res.message)
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -66,8 +72,11 @@ export default function CourseCard(props: ICourseCardProps) {
           <Typography variant="body2">{department}</Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" onClick={handleEnroll}>
-            Enroll
+          <Button size="small" variant="outlined" onClick={handleEnroll}>
+            Opt-in
+          </Button>
+          <Button size="small" color="warning" onClick={handleOptout}>
+            Opt-out
           </Button>
         </CardActions>
       </Card>
