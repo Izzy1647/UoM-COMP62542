@@ -134,8 +134,22 @@ return:
 	"user":user,
 }
 ```
+### update status
 
-
+```
+/status/update
+POST
+{
+	status: 0
+}
+```
+```
+return:
+{
+	"status": 0 | 1
+	"message": "",
+}
+```
 
 ### 时间表 5.5 联调
 
