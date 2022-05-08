@@ -1,0 +1,9 @@
+.rowContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.rowItem {
+  /* margin: 2px 50px; */
+  padding: 0 10px;
+}
