@@ -245,7 +245,26 @@ return
 }
 
 ```
+```
+/selectedcourse
+GET
 
+return 
+{
+	data: [
+		{
+				courseName: '',
+				type: 'opt',
+				time: '1-0900-1100',
+				department: '',
+				courseId: ''
+		},
+		{
+		
+		}
+	]
+}
+```
 
 
 ## Newsletter 5.6
