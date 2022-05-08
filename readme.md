@@ -136,6 +136,13 @@ return:
 ```
 ### update status
 
+
+```
+/status
+GET
+token in header
+```
+
 ```
 /status/update
 POST
