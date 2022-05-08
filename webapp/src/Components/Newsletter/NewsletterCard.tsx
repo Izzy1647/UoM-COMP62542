@@ -10,13 +10,16 @@ export interface INewsletterCardProps {
   newsletterId: string
   newsletterName: string
   preview: string
+  setShowLoading?: (value: boolean) => void
 }
 
 export default function NewsletterCard(props: INewsletterCardProps) {
   const { newsletterName, preview } = props
   const onSubscribe = async () => {
-    const {newsletterId} = props
+    const { newsletterId, setShowLoading } = props
+    setShowLoading!(true)
     const res = await subscribe(newsletterId)
+    setShowLoading!(false)
     alert(res.message)
   }
   return (
