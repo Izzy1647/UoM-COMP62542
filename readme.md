@@ -140,7 +140,7 @@ return:
 /status/update
 POST
 {
-	status: ""
+	status: 0
 }
 ```
 ```
