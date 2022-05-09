@@ -136,6 +136,13 @@ return:
 ```
 ### update status
 
+
+```
+/status
+GET
+token in header
+```
+
 ```
 /status/update
 POST
@@ -245,7 +252,26 @@ return
 }
 
 ```
+```
+/selectedcourse
+GET
 
+return 
+{
+	data: [
+		{
+				courseName: '',
+				type: 'opt',
+				time: '1-0900-1100',
+				department: '',
+				courseId: ''
+		},
+		{
+		
+		}
+	]
+}
+```
 
 
 ## Newsletter 5.6
@@ -272,6 +298,49 @@ return
 POST
 {
 	newsletterId: ''
+}
+```
+
+
+## Admin 5.6
+
+/admin/optcourses
+
+```
+根据课程id查选了这门课的学生名单 或者根据学生id查他选的课
+GET
+{
+	courseId?: ''
+	studentId?: ''
+}
+
+url 形如 /admin/optcourses?studentId=10828333 或者 /admin/optcourses?courseId=COMP61411
+
+return 
+{
+	data: [
+		{
+			courseId: '',
+			studentId: ''
+		},
+		{
+			courseId: '',
+			studentId: ''
+		},
+	]
+}
+
+删掉studentId,courseId这条记录
+DELETE
+{
+	courseId: '',
+	studentId: ''
+}
+
+return 
+{
+	status: 0|1,
+	message: ''
 }
 ```
 
