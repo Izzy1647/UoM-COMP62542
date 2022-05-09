@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { login } from '../../api/signin'
+import UserDataManager from '../../model/UserDataManager'
 
 const cookies = new Cookies()
 const theme = createTheme()
@@ -25,6 +26,8 @@ export default function SignIn() {
   const [showAlert, setShowAlert] = React.useState(false)
   const [rememberMe, setRememberMe] = React.useState(false)
   const [showLoading, setShowLoading] = React.useState(false)
+
+  const UserData = UserDataManager.getInstance()
 
   React.useEffect(() => {
     if (localStorage.getItem('studentId')) {
@@ -53,7 +56,11 @@ export default function SignIn() {
       const res = await login(data)
       const { token } = res
       cookies.set('token', token)
-      sessionStorage.setItem('user', JSON.stringify(res.user))
+
+      // singleton applied here
+      UserData.setUserData(res.user)
+
+      // sessionStorage.setItem('user', JSON.stringify(res.user))
       setShowLoading(false)
       if (res.status) {
         // admin

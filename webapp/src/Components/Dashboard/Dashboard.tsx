@@ -79,7 +79,13 @@ const Drawer = styled(MuiDrawer, {
   }
 }))
 
-const mdTheme = createTheme()
+const mdTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#6b2c91'
+    }
+  }
+})
 
 function DashboardContent() {
   const navigate = useNavigate()

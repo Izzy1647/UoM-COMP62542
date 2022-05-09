@@ -5,14 +5,16 @@ import StepLabel from '@mui/material/StepLabel'
 import LinearProgress from '@mui/material/LinearProgress'
 import { Button, Grid, Paper, Box } from '@mui/material'
 import { getStatus, updateStatus } from '../../api/status'
+import UserDataManager from '../../model/UserDataManager'
 
 const steps = ['Not Registered', 'Registration Pending', 'Fully Registered']
 
 export default function Status() {
+  // retrieve data from singleton UserData
+  const userData = UserDataManager.getInstance()
+
   const [showLoading, setShowLoading] = React.useState(false)
-  const [status, setStatus] = React.useState(
-    JSON.parse(sessionStorage.getItem('user') as string).status
-  )
+  const [status, setStatus] = React.useState(userData.getUserData().status)
 
   React.useEffect(() => {
     getStudentStatus()

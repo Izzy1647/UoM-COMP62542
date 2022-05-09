@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Grid, Paper, Box, Divider } from '@mui/material'
+import { Button, Divider } from '@mui/material'
 
 import './styles.css'
 import { optStudentOut } from '../../api/admin'
