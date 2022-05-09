@@ -8,5 +8,5 @@ export const newsletters = [
     id: '2',
     title: 'nasdzfsdfafs',
     preview: 'ssdafffagrfaiuhfiuahewufczjxkbviewk`hsdf`fjksmnxvkjnsdkjfnvjerdsv'
-  },
+  }
 ]

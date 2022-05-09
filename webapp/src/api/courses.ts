@@ -22,7 +22,7 @@ export function enroll(courseId: string) {
 /**
  * optout a course
  */
- export function optout(courseId: string) {
+export function optout(courseId: string) {
   return fetch(`${API_PREFIX}/optcourses?courseId=${courseId}`, {
     method: 'DELETE'
   })

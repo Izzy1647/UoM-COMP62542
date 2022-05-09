@@ -198,7 +198,6 @@ const Calendar = () => {
   }
 
   const concatTime = (day: string, hour: string, duration: string) => {
-    // 5 14 90
     return `${day}-${hour}00-${Number(hour) + Number(duration)}00`
   }
 

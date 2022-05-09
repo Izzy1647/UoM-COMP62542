@@ -1,5 +1,5 @@
-import fetch from "../utils/fetch"
-import { API_PREFIX } from "./constants"
+import fetch from '../utils/fetch'
+import { API_PREFIX } from './constants'
 export interface ISignInParam {
   studentId: string
 }
